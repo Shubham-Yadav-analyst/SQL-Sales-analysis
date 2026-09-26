@@ -1,0 +1,752 @@
+use data_analysis;
+CREATE TABLE sales (
+    order_id INT,
+    order_date DATE,
+    customer_name VARCHAR(100),
+    city VARCHAR(50),
+    category VARCHAR(50),
+    product_name VARCHAR(100),
+    quantity INT,
+    sales DECIMAL(10,2),
+    profit DECIMAL(10,2)
+);
+show tables;
+describe sales;
+INSERT INTO sales
+(order_id, order_date, customer_name, city, category, product_name, quantity, sales, profit)
+VALUES
+(1001, '2026-01-05', 'Rahul', 'Mumbai', 'Electronics', 'Laptop', 2, 120000, 18000),
+(1002, '2026-01-08', 'Priya', 'Delhi', 'Furniture', 'Office Chair', 5, 25000, 5000),
+(1003, '2026-01-12', 'Amit', 'Pune', 'Electronics', 'Headphones', 4, 12000, 2400),
+(1004, '2026-01-18', 'Neha', 'Bangalore', 'Stationery', 'Notebook', 20, 4000, 800),
+(1005, '2026-02-02', 'Rohan', 'Mumbai', 'Electronics', 'Mobile Phone', 3, 60000, 9000),
+(1006, '2026-02-10', 'Sneha', 'Delhi', 'Furniture', 'Desk', 2, 30000, 6000),
+(1007, '2026-02-15', 'Vikas', 'Pune', 'Stationery', 'Pen Set', 15, 3000, 600),
+(1008, '2026-02-21', 'Anjali', 'Bangalore', 'Electronics', 'Monitor', 3, 45000, 6750),
+(1009, '2026-03-03', 'Karan', 'Mumbai', 'Furniture', 'Bookshelf', 2, 18000, 3600),
+(1010, '2026-03-07', 'Pooja', 'Delhi', 'Electronics', 'Keyboard', 6, 12000, 2400),
+(1011, '2026-03-14', 'Arjun', 'Pune', 'Electronics', 'Mouse', 10, 10000, 2000),
+(1012, '2026-03-20', 'Meera', 'Bangalore', 'Furniture', 'Table', 3, 36000, 7200),
+(1013, '2026-04-04', 'Sahil', 'Mumbai', 'Stationery', 'Marker Set', 12, 3600, 720),
+(1014, '2026-04-11', 'Kavya', 'Delhi', 'Electronics', 'Tablet', 2, 50000, 7500),
+(1015, '2026-04-19', 'Nitin', 'Pune', 'Furniture', 'Cabinet', 2, 22000, 4400);
+select * from sales;
+select customer_name from sales;
+use data_analysis;
+select * from sales where city ='mumbai';
+select order_id from sales where city ='mumbai';
+SELECT customer_name, sales
+FROM sales
+WHERE sales > 30000;
+select order_id,city from sales where city ='mumbai';
+select order_id,city from sales where city ='delhi';
+select order_id,category from sales where category ='electronics';
+select sales from sales where sales > 40000;
+select quantity from sales where quantity > 5;
+select profit from sales where profit < 3000;
+select * from sales where city ='mumbai' and category='electronics';
+select * from sales where city ='mumbai' or city='delhi';
+SELECT *
+FROM sales
+WHERE category = 'Electronics'
+AND city = 'Mumbai'
+AND sales > 50000;
+select * from sales where city ='mumbai' and category='furniture';
+select customer_name,city,sales from sales where sales>20000 and profit>4000;
+use data_analysis;
+select * from sales where city in ('mumbai','pune','delhi');
+select * from sales where sales between 20000 and 50000;
+select * from sales where order_date between '2026-01-01' and '2026-01-31';
+select * from sales where customer_name like 'a%';
+select * from sales where customer_name like '%a%';
+select * from sales where customer_name like '%a';
+select * from sales where city in ('mumbai','pune','delhi') and sales between 20000 and 60000;
+SELECT * FROM sales ORDER BY sales ASC;
+SELECT * FROM sales ORDER BY sales desc;
+SELECT customer_name, product_name, sales FROM sales ORDER BY sales DESC;
+SELECT customer_name, product_name, sales FROM sales ORDER BY sales asc;
+SELECT customer_name, product_name, sales FROM sales ORDER BY sales DESC limit 5;
+SELECT customer_name, product_name, sales FROM sales ORDER BY sales asc limit 3;
+SELECT customer_name, product_name, sales FROM sales where category ='electronics' ORDER BY sales DESC limit 3;
+use data_analysis;
+select distinct city from sales;
+select distinct city,category from sales;
+INSERT INTO sales
+(order_id, order_date, customer_name, city, category, product_name, quantity, sales, profit)
+VALUES
+(1016, '2026-04-25', 'Varun', NULL, 'Electronics', 'Webcam', 2, 14000, NULL);
+select * from sales where city is null;
+select * from sales where city is not null;
+select count(*) as Total_oredrs from sales;
+select sum(sales) as Total_sales from sales;
+select avg(sales) as average_sales from sales;
+select min(sales) as min_sales from sales;
+select max(sales) as max_sales from sales;
+select count(*) as Total_oredrs,sum(sales) as Total_sales, avg(sales) as average_sales, min(sales) as min_sales,max(sales) as max_sales,sum(profit) as total_profit from sales;
+use data_analysis;
+select city,sum(sales) as total_sales from sales group by city;
+select category,sum(sales) as total_sales from sales group by category;
+SELECt category,SUM(sales) AS total_sales FROM sales GROUP BY category ORDER BY total_sales DESC;
+SELECT city, SUM(sales) AS total_sales FROM sales WHERE category = 'Electronics' GROUP BY city;
+SELECT city,count(*) as total_orders,SUM(sales) AS total_sales,SUM(profit) AS total_profit,AVG(sales) AS average_sales FROM sales GROUP BY city order by total_sales desc;
+select * from sales where city ='mumbai';
+select city,sum(sales) as total_sales from sales group by city having sum(sales)>50000;
+SELECT city, SUM(sales) AS total_sales
+FROM sales
+GROUP BY city
+HAVING SUM(sales) > 50000;
+SELECT city,SUM(sales) AS total_sales FROM sales WHERE category = 'Electronics' GROUP BY city HAVING SUM(sales) > 30000;
+select city,count(*) as total_orders,sum(sales) as total_sales,sum(profit) as total_profit from sales group by city having sum(sales)>40000 and sum(profit)>7000;
+select order_id,customer_name,sales, case when sales>50000 then 'High_sales' when sales>=20000 then 'medium_sales' else 'low_sales' end as sales_level from sales;
+select customer_name,upper(customer_name) as sky from sales;
+select customer_name,lower(customer_name) as sky from sales;
+select customer_name,length(customer_name) as sky from sales;
+select concat(customer_name,'_',city) as customer_loc from sales;
+select customer_name,substring(customer_name,1,4) as first_four from sales;
+select trim(customer_name) as cleaned from sales;
+select customer_name,upper(trim(customer_name)) as combine_fn from sales; 
+use data_analysis;
+SELECT order_date,YEAR(order_date) AS order_year FROM sales;
+SELECT order_date,month(order_date) AS order_month FROM sales;
+SELECT order_date,day(order_date) AS order_day FROM sales;
+SELECT order_date,monthname(order_date) AS month_name FROM sales;
+SELECT MONTH(order_date) AS month_number,MONTHNAME(order_date) AS month_name,SUM(sales) AS total_sales FROM sales GROUP BY MONTH(order_date),MONTHNAME(order_date) ORDER BY month_number;
+CREATE TABLE customers (
+    customer_id INT,
+    customer_name VARCHAR(100),
+    customer_segment VARCHAR(50),
+    age INT
+);
+INSERT INTO customers
+(customer_id, customer_name, customer_segment, age)
+VALUES
+(1, 'Rahul', 'Corporate', 28),
+(2, 'Priya', 'Consumer', 32),
+(3, 'Amit', 'Consumer', 25),
+(4, 'Neha', 'Corporate', 29),
+(5, 'Rohan', 'Consumer', 35),
+(6, 'Sneha', 'Corporate', 31),
+(7, 'Vikas', 'Consumer', 27),
+(8, 'Anjali', 'Corporate', 30),
+(9, 'Karan', 'Consumer', 26),
+(10, 'Pooja', 'Corporate', 34),
+(11, 'Arjun', 'Consumer', 29),
+(12, 'Meera', 'Corporate', 33),
+(13, 'Sahil', 'Consumer', 24),
+(14, 'Kavya', 'Corporate', 28),
+(15, 'Nitin', 'Consumer', 36),
+(16, 'Varun', 'Corporate', 30);
+select * from customers;
+select * from sales inner join customers on sales.customer_name=customers.customer_name;
+SELECT
+    sales.customer_name,
+    sales.city,
+    sales.sales,
+    sales.profit,
+    customers.customer_segment,
+    customers.age
+FROM sales
+INNER JOIN customers
+ON sales.customer_name = customers.customer_name;
+SELECT
+    s.customer_name,
+    s.product_name,
+    s.sales,
+    c.customer_segment
+FROM sales AS s
+INNER JOIN customers AS c
+ON s.customer_name = c.customer_name
+WHERE c.customer_segment = 'Corporate';
+INSERT INTO customers
+(customer_id, customer_name, customer_segment, age)
+VALUES
+(17, 'Aarav', 'Consumer', 27);
+SELECT
+    c.customer_name,
+    c.customer_segment,
+    s.order_id,
+    s.sales
+FROM sales AS s
+RIGHT JOIN customers AS c
+ON s.customer_name = c.customer_name;
+use data_analysis;
+CREATE TABLE products (
+    product_name VARCHAR(100),
+    brand VARCHAR(50),
+    product_type VARCHAR(50)
+);
+INSERT INTO products
+(product_name, brand, product_type)
+VALUES
+('Laptop', 'Dell', 'Computer'),
+('Office Chair', 'IKEA', 'Furniture'),
+('Headphones', 'Sony', 'Audio'),
+('Notebook', 'Classmate', 'Stationery'),
+('Mobile Phone', 'Samsung', 'Mobile'),
+('Desk', 'IKEA', 'Furniture'),
+('Pen Set', 'Cello', 'Stationery'),
+('Monitor', 'LG', 'Computer'),
+('Bookshelf', 'IKEA', 'Furniture'),
+('Keyboard', 'Logitech', 'Computer'),
+('Mouse', 'Logitech', 'Computer'),
+('Table', 'IKEA', 'Furniture'),
+('Marker Set', 'Camlin', 'Stationery'),
+('Tablet', 'Samsung', 'Mobile'),
+('Cabinet', 'Godrej', 'Furniture'),
+('Webcam', 'Logitech', 'Computer');
+SELECT
+    s.customer_name,
+    c.customer_segment,
+    c.age,
+    s.product_name,
+    p.brand,
+    p.product_type,
+    s.sales,
+    s.profit
+FROM sales AS s
+INNER JOIN customers AS c
+    ON s.customer_name = c.customer_name
+INNER JOIN products AS p
+    ON s.product_name = p.product_name;
+select customer_name from customers union select sales from sales;
+SELECT customer_name
+FROM customers
+WHERE customer_segment = 'Corporate'
+UNION
+SELECT customer_name
+FROM customers
+WHERE age > 30;
+SELECT customer_name
+FROM customers
+WHERE customer_segment = 'Corporate'
+
+UNION ALL
+
+SELECT customer_name
+FROM customers
+WHERE age > 30;
+select customer_name , city, coalesce(city,'unknown') as city_clean from sales;
+select customer_name,profit, coalesce(profit,0) as profit_clean from sales;
+use data_analysis;
+SELECT
+    order_id,
+    COUNT(*) AS duplicate_count
+FROM sales
+GROUP BY order_id
+HAVING COUNT(*) > 1;
+SELECT
+    customer_name,
+    COUNT(*) AS order_count
+FROM sales
+GROUP BY customer_name
+HAVING COUNT(*) > 1;
+SELECT
+    order_id,
+    order_date,
+    customer_name,
+    city,
+    category,
+    product_name,
+    quantity,
+    sales,
+    profit,
+    COUNT(*) AS duplicate_count
+FROM sales
+GROUP BY
+    order_id,
+    order_date,
+    customer_name,
+    city,
+    category,
+    product_name,
+    quantity,
+    sales,
+    profit
+HAVING COUNT(*) > 1;
+INSERT INTO sales
+(order_id, order_date, customer_name, city, category, product_name, quantity, sales, profit)
+VALUES
+(1017, '2026-04-28', 'Rahul', 'Mumbai', 'Electronics', 'Laptop', 2, 120000, 18000);
+SELECT
+    order_id,
+    COUNT(*) AS duplicate_count
+FROM sales
+GROUP BY order_id
+HAVING COUNT(*) > 1;
+INSERT INTO sales
+(order_id, order_date, customer_name, city, category, product_name, quantity, sales, profit)
+VALUES
+(1017, '2026-04-28', 'Rahul', 'Mumbai', 'Electronics', 'Laptop', 2, 120000, 18000);
+SELECT
+    order_id,
+    COUNT(*) AS duplicate_count
+FROM sales
+GROUP BY order_id
+HAVING COUNT(*) > 1;
+select order_id, count(*) as duplicate_count from sales group by order_id having count(*)>1;
+select *, row_number() over(partition by order_id order by order_id) as row_num from sales;
+WITH duplicate_check AS (
+    SELECT *,
+           ROW_NUMBER() OVER (
+               PARTITION BY order_id
+               ORDER BY order_id
+           ) AS row_num
+    FROM sales
+)
+SELECT *
+FROM duplicate_check
+WHERE row_num > 1;
+SELECT *
+FROM sales
+WHERE city IS NULL;
+SELECT
+    COUNT(*) AS total_rows,
+    COUNT(city) AS rows_with_city,
+    COUNT(*) - COUNT(city) AS missing_city
+FROM sales;
+SELECT *
+FROM sales
+WHERE quantity <= 0;
+SELECT
+    COUNT(*) AS total_rows,
+    COUNT(city) AS valid_city_rows,
+    COUNT(profit) AS valid_profit_rows,
+    COUNT(*) - COUNT(city) AS missing_city,
+    COUNT(*) - COUNT(profit) AS missing_profit
+FROM sales;
+use data_analysis;
+SELECT
+    order_id,
+    customer_name,
+    sales,
+    CASE
+        WHEN sales >= 50000 THEN 'High'
+        WHEN sales >= 20000 THEN 'Medium'
+        ELSE 'Low'
+    END AS sales_category
+FROM sales;
+SELECT
+    customer_name,
+    profit,
+    CASE
+        WHEN profit IS NULL THEN 'Missing'
+        WHEN profit >= 5000 THEN 'High Profit'
+        WHEN profit > 0 THEN 'Low Profit'
+        ELSE 'Loss'
+    END AS profit_category
+FROM sales;
+SELECT
+    CASE
+        WHEN sales >= 50000 THEN 'High'
+        WHEN sales >= 20000 THEN 'Medium'
+        ELSE 'Low'
+    END AS sales_category,
+    COUNT(*) AS total_orders,
+    SUM(sales) AS total_sales
+FROM sales
+GROUP BY
+    CASE
+        WHEN sales >= 50000 THEN 'High'
+        WHEN sales >= 20000 THEN 'Medium'
+        ELSE 'Low'
+    END;
+    WITH city_sales AS (
+    SELECT
+        city,
+        SUM(sales) AS total_sales
+    FROM sales
+    GROUP BY city
+)
+SELECT *
+FROM city_sales;
+SELECT
+    city,
+    SUM(sales) AS total_sales
+FROM sales
+GROUP BY city;
+WITH city_sales AS (
+    SELECT
+        city,
+        SUM(sales) AS total_sales
+    FROM sales
+    GROUP BY city
+)
+SELECT
+    city,
+    total_sales
+FROM city_sales
+WHERE total_sales > 50000;
+WITH city_sales AS (
+    SELECT
+        city,
+        SUM(sales) AS total_sales,avg(sales) as avg
+    FROM sales
+    GROUP BY city
+)
+SELECT * from city_sales order by total_sales desc;
+WITH customer_sales AS (
+    SELECT
+        customer_name,
+        SUM(sales) AS total_sales
+    FROM sales
+    GROUP BY customer_name
+)
+SELECT
+    cs.customer_name,
+    cs.total_sales,
+    c.customer_segment
+FROM customer_sales AS cs
+INNER JOIN customers AS c
+    ON cs.customer_name = c.customer_name;
+    WITH customer_sales AS (
+    SELECT
+        customer_name,
+        SUM(sales) AS total_sales
+    FROM sales
+    GROUP BY customer_name
+),
+customer_info AS (
+    SELECT
+        customer_name,
+        customer_segment,
+        age
+    FROM customers
+)
+SELECT
+    cs.customer_name,
+    cs.total_sales,
+    ci.customer_segment,
+    ci.age
+FROM customer_sales AS cs
+INNER JOIN customer_info AS ci
+    ON cs.customer_name = ci.customer_name;
+    WITH category_sales AS (
+    SELECT
+        category,
+        SUM(sales) AS total_sales
+    FROM sales
+    GROUP BY category
+),
+category_profit AS (
+    SELECT
+        category,
+        SUM(profit) AS total_profit
+    FROM sales
+    GROUP BY category
+)
+SELECT
+    cs.category,
+    cs.total_sales,
+    cp.total_profit
+FROM category_sales AS cs
+INNER JOIN category_profit AS cp
+    ON cs.category = cp.category;
+SELECT
+    customer_name,
+    sales,
+    SUM(sales) OVER () AS total_sales
+FROM sales;
+SELECT
+    order_id,
+    customer_name,
+    city,
+    sales,
+    SUM(sales) OVER (
+        PARTITION BY city
+    ) AS city_total_sales
+FROM sales;
+SELECT
+    order_id,
+    product_name,
+    category,
+    sales,
+    AVG(sales) OVER (
+        PARTITION BY category
+    ) AS category_avg_sales
+FROM sales;
+SELECT
+    order_id,
+    product_name,
+    category,
+    profit,
+    SUM(profit) OVER (
+        PARTITION BY category
+    ) AS category_total_profit
+FROM sales;
+SELECT
+    order_id,
+    customer_name,
+    sales,
+    ROW_NUMBER() OVER (
+        ORDER BY sales DESC
+    ) AS row_num
+FROM sales;
+SELECT
+    order_id,
+    customer_name,
+    city,
+    sales,
+    ROW_NUMBER() OVER (
+        PARTITION BY city
+        ORDER BY sales DESC
+    ) AS row_num
+FROM sales;
+WITH ranked_sales AS (
+    SELECT
+        order_id,
+        customer_name,
+        city,
+        sales,
+        ROW_NUMBER() OVER (
+            PARTITION BY city
+            ORDER BY sales DESC
+        ) AS row_num
+    FROM sales
+)
+SELECT
+    order_id,
+    customer_name,
+    city,
+    sales
+FROM ranked_sales
+WHERE row_num = 1;
+
+SELECT
+    order_id,
+    customer_name,
+    sales,
+    RANK() OVER (
+        ORDER BY sales DESC
+    ) AS sales_rank
+FROM sales;
+
+SELECT
+    order_id,
+    customer_name,
+    city,
+    sales,
+    RANK() OVER (
+        PARTITION BY city
+        ORDER BY sales desc
+    ) AS city_rank
+FROM sales;
+
+WITH ranked_sales AS (
+    SELECT
+        order_id,
+        customer_name,
+        city,
+        sales,
+        RANK() OVER (
+            PARTITION BY city
+            ORDER BY sales DESC
+        ) AS city_rank
+    FROM sales
+)
+SELECT
+    order_id,
+    customer_name,
+    city,
+    sales
+FROM ranked_sales
+WHERE city_rank = 1;
+
+SELECT
+    order_id,
+    customer_name,
+    sales,
+    DENSE_RANK() OVER (
+        ORDER BY sales DESC
+    ) AS sales_rank
+FROM sales;
+
+SELECT
+    product_name,
+    category,
+    sales,
+    DENSE_RANK() OVER (
+        PARTITION BY category
+        ORDER BY sales DESC
+    ) AS category_rank
+FROM sales;
+
+WITH ranked_sales AS (
+    SELECT
+        order_id,
+        customer_name,
+        sales,
+        DENSE_RANK() OVER (
+            ORDER BY sales DESC
+        ) AS sales_rank
+    FROM sales
+)
+SELECT
+    order_id,
+    customer_name,
+    sales,
+    sales_rank
+FROM ranked_sales
+WHERE sales_rank <= 2;
+
+SELECT
+    order_id,
+    order_date,
+    customer_name,
+    sales,
+    LAG(sales) OVER (
+        ORDER BY order_date
+    ) AS previous_sales
+FROM sales;
+
+SELECT
+    order_id,
+    order_date,
+    customer_name,
+    sales,
+    LAG(sales) OVER (
+        ORDER BY order_date
+    ) AS previous_sales,
+    sales -LAG(sales) OVER (
+        ORDER BY order_date
+    ) AS sales_difference
+FROM sales;
+
+SELECT
+    customer_name,
+    order_date,
+    sales,
+    LAG(sales) OVER (
+        PARTITION BY customer_name
+        ORDER BY order_date
+    ) AS previous_customer_sales
+FROM sales;
+
+SELECT
+    order_id,
+    order_date,
+    sales,
+    LAG(sales, 2) OVER (
+        ORDER BY order_date
+    ) AS sales_two_rows_ago
+FROM sales;
+
+SELECT
+    order_id,
+    order_date,
+    customer_name,
+    sales,
+    LEAD(sales) OVER (
+        ORDER BY order_date
+    ) AS next_sales
+FROM sales;
+
+SELECT
+    order_id,
+    order_date,
+    customer_name,
+    sales,
+    LEAD(sales) OVER (
+        ORDER BY order_date
+    ) AS next_sales,
+    LEAD(sales) OVER (
+        ORDER BY order_date
+    ) - sales AS sales_difference
+FROM sales;
+
+SELECT
+    customer_name,
+    order_date,
+    sales,
+    LEAD(sales) OVER (
+        PARTITION BY customer_name
+        ORDER BY order_date
+    ) AS next_customer_sales
+FROM sales;
+
+SELECT
+    order_id,
+    order_date,
+    sales,
+    LEAD(sales, 2) OVER (
+        ORDER BY order_date
+    ) AS sales_two_rows_ahead
+FROM sales;
+
+SELECT
+    order_id,
+    order_date,
+    customer_name,
+    sales,
+    SUM(sales) OVER (
+        ORDER BY order_date
+        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+    ) AS running_total
+FROM sales;
+
+SELECT
+    order_id,
+    order_date,
+    profit,
+    SUM(profit) OVER (
+        ORDER BY order_date
+        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+    ) AS running_profit
+FROM sales;
+
+SELECT
+    order_id,
+    order_date,
+    city,
+    sales,
+    SUM(sales) OVER (
+        PARTITION BY city
+        ORDER BY order_date
+        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+    ) AS city_running_sales
+FROM sales;
+
+SELECT
+    order_id,
+    order_date,
+    sales,
+    AVG(sales) OVER (
+        ORDER BY order_date
+        ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
+    ) AS moving_avg_3
+FROM sales;
+
+SELECT
+    order_id,
+    order_date,
+    city,
+    sales,
+    AVG(sales) OVER (
+        PARTITION BY city
+        ORDER BY order_date
+        ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
+    ) AS city_moving_avg
+FROM sales;
+
+CREATE DATABASE sales_analysis;
+USE sales_analysis;
+
+CREATE TABLE sales_data (
+    order_id INT PRIMARY KEY,
+    order_date DATE,
+    customer_name VARCHAR(100),
+    city VARCHAR(50),
+    region VARCHAR(30),
+    category VARCHAR(50),
+    product VARCHAR(100),
+    quantity INT,
+    sales DECIMAL(10,2),
+    profit DECIMAL(10,2),
+    payment_mode VARCHAR(30)
+);
+DESCRIBE sales_data;
+drop database sales_analysis;
+
+    
+
+
+
